@@ -28,13 +28,14 @@ public class Game extends JFrame{
 	public void start(){
 		this.topBar = new TopBar(new Rectangle(bounds.width, 50));
 		
-		this.gameScene = new GameScene(this);
+		this.gameScene = new GameScene(this , this.topBar );
 		this.gameScene.init();
 		this.gameScene.start();
 		
 		this.add(topBar);
 		this.add(gameScene);
 		this.setVisible(true);
+
 	}
 
 	/**

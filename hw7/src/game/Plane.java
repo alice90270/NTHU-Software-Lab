@@ -12,7 +12,7 @@ public class Plane {
 	private PApplet parent;
 	private PImage[] images;
 	private int x, y, w, h;
-	private int frame, imageCount, movement;
+	private int count,frame, imageCount, movement;
 	
 	public Plane(PApplet parent, PImage[] images) {
 		this.parent = parent;
@@ -22,21 +22,27 @@ public class Plane {
 		this.y = parent.height/2;
 		this.w = images[0].width;
 		this.h = images[0].height;
+		
+		this.count = 0;
+		this.frame=0;
 	}
 	
 	public void display() {
-		
 		switch(this.movement){
 			case UP:
 				this.y -= 5;
+				this.frame=(this.frame+1)%2;	//frame永遠小於2
+				this.count = 0;					//images[0]或[1]
 				break;
 			case DOWN:
 				this.y += 5;
+				this.count = 1;					//images[2]
 				break;
 			default:
 				break;
 		}
-		this.parent.image(images[0], x, y, w, h);
+		/*count+frame構成0,1,2的變換*/
+		this.parent.image(images[count+frame], x, y, w, h);
 		
 	}
 	

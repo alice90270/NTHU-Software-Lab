@@ -22,7 +22,6 @@ public class Rock {
 			this.y = 0;
 		else
 			this.y = parent.height-this.h;
-		
 	}
 	
 	public void display(){
@@ -41,5 +40,4 @@ public class Rock {
 	public int getW(){
 		return this.w;
 	}
-	
 }

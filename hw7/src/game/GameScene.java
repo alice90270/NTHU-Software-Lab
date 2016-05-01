@@ -1,8 +1,10 @@
 package game;
 
+import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -17,18 +19,26 @@ public class GameScene extends PApplet{
 	private Plane plane;
 	private Queue<Rock> rocks;
 	private Game parentFrame;
+
+	private TopBar topBar;
+	public static int pass;
+	public static float currentH=5000;
+	private int i=0;
 	
 	/**
 	 * Constructor of a game scene.
 	 * 
 	 * @param  parentFrame | the JFrame that owns this game scene
 	 */
-	public GameScene(Game parentFrame){
+	public GameScene(Game parentFrame , TopBar topbar){
+		/*傳入Game中的topbar*/
+		this.topBar = topbar ;
+		
 		this.parentFrame = parentFrame;
 		this.planeImgs = new PImage[3];
-		this.planeImgs[0] = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/Planes/planeGreen1.png").getPath());
+		this.planeImgs[2] = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/Planes/planeGreen1.png").getPath());
 		this.planeImgs[1] = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/Planes/planeGreen2.png").getPath());
-		this.planeImgs[2] = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/Planes/planeGreen3.png").getPath());
+		this.planeImgs[0] = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/Planes/planeGreen3.png").getPath());
 		this.backgroundImg = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/background.png").getPath());
 		this.rockImg = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/rockGrass.png").getPath());
 		this.rockDownImg = loadImage(this.getClass().getResource("/res/TappyPlane/PNG/rockGrassDown.png").getPath());
@@ -58,14 +68,23 @@ public class GameScene extends PApplet{
 		
 		checkRocks();
 		
+		//更新 topbar 12 次/秒
+		i=(i+1)%5;
+		if(i==0){
+		this.topBar.setBar(pass,currentH);
+		}
+		
 		/* The game is controlled by pressing SPACE to maintain the height of the plane.*/
-		if(keyPressed&&key==' ')
+		if(keyPressed&&key==' '){
 			this.plane.setMovement(Plane.UP);
-		else
+			currentH = (float) 10000*(1-this.plane.getY()/530f);
+		}
+		else{
 			this.plane.setMovement(Plane.DOWN);
-		
+			currentH = (float) 10000*(1-this.plane.getY()/530f);
+		}
 		this.plane.display();
-		
+
 		for(Rock rock : this.rocks)
 			rock.display();
 		
@@ -114,7 +133,10 @@ public class GameScene extends PApplet{
 		Rock rock =this.rocks.peek();
 		if( rock.getX()+rock.getW()<0 ){
 			this.rocks.remove();
+			/*移除石頭時=>經過石頭*/
+			pass++;								//經過的石頭數增加
+			this.topBar.setBar(pass,currentH);	//更新TOPBAR資訊
+			//System.out.println("pass= "+pass);
 		}
 	}
-	
 }
