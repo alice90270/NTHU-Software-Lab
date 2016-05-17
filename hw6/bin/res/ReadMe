@@ -1,0 +1,22 @@
+<READ ME>
+
+小BUG：
+檔案執行必須從JFrameWithApplet開始，從MyApplet執行會說路徑錯誤必須修改路徑(兩者所需路徑不一樣無法共存QQ)
+動畫不明顯。
+
+1.Frame設定為不可改變大小，否則地圖變形點點會留在原本的位置。
+
+2.新建class Location去讀取csv檔，用一般讀取.txt的方式，一行一行讀入，並將檔案存成所需的HashMap
+
+3.共存了三個HashMap分別為
+	(1)HashMap<String, PVector> locationHashMap		<地名，座標> 存取所有的地點
+	(2)HashMap<String, ArrayList<String>>  emigrant;	<移出地地名，[移出至各國的國家列表]>
+	(3)HashMap<String, ArrayList<String>>  immigrant;	<移入地地名，[移入自各國的國家列表]>
+
+4.MyApplet再使用那些HashMaps去做畫地圖的工作
+
+5.因為點點太多太擠了，不好辨識不同的地點，不得已只好把半徑設為8，感應半徑為3
+
+6.滑鼠移到點點上會出現該地地名跟移出路線(黃)，按下滑鼠左鍵地名會變色並出現該地移入路線(紅)
+
+7.動畫利用分點，從起始點開始，畫到線上分點，用for迴圈慢慢減少除數n，分點的距離就會越來越接近目標
